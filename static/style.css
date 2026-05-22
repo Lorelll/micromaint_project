@@ -1,0 +1,287 @@
+/* Базові системні токени (Світла тема) */
+:root {
+    --md-primary: #6750A4;
+    --md-on-primary: #FFFFFF;
+    --md-primary-container: #EADDFF;
+    --md-on-primary-container: #21005D;
+    --md-surface: #FEF7FF;
+    --md-surface-container: #F3EDF7;
+    --md-on-surface: #1D1B20;
+    --md-outline: #79747E;
+    --md-success: #146c2e;
+    --md-success-container: #c4eed0;
+    --md-error-container: #F9DEDC;
+    --md-on-error-container: #410E0B;
+}
+
+/* Токени для темної теми (Material Baseline Dark) */
+[data-theme="dark"] {
+    --md-primary: #D0BCFF;
+    --md-on-primary: #381E72;
+    --md-primary-container: #4F378B;
+    --md-on-primary-container: #EADDFF;
+    --md-surface: #141218;
+    --md-surface-container: #211F26;
+    --md-on-surface: #E6E1E5;
+    --md-outline: #938F99;
+    --md-success: #b4eebd;
+    --md-success-container: #0f5224;
+    --md-error-container: #8C1D1D;
+    --md-on-error-container: #F9DEDC;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--md-surface);
+    color: var(--md-on-surface);
+    transition: background-color 0.25s ease, color 0.25s ease;
+    margin: 0;
+    padding: 0;
+}
+
+/* Навігація */
+.navbar {
+    background: var(--md-surface-container);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 24px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Компоненти кнопок */
+.btn, .btn-submit, .btn-text {
+    font-family: inherit;
+    border: none;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary, .btn-submit {
+    background: var(--md-primary);
+    color: var(--md-on-primary);
+    padding: 14px 28px;
+}
+
+.btn-primary:hover, .btn-submit:hover {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    opacity: 0.95;
+}
+
+.btn-text {
+    color: var(--md-primary);
+    padding: 8px 16px;
+    background: transparent;
+}
+.btn-text:hover { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+
+/* Універсальний тумблер теми */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--md-on-surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+.theme-toggle-btn:hover { background: rgba(121, 116, 126, 0.16); }
+
+/* Поля введення */
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--md-outline); }
+
+input, select, textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--md-outline);
+    border-radius: 14px;
+    box-sizing: border-box;
+    background: var(--md-surface);
+    color: var(--md-on-surface);
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: var(--md-primary);
+    outline: none;
+    border-width: 2px;
+    padding: 13px 15px; /* компенсуємо товщину рамки */
+}
+
+/* Корекція кольору списків для темної теми */
+select option {
+    background: var(--md-surface-container);
+    color: var(--md-on-surface);
+}
+
+/* Контейнери-картки */
+.expressive-card {
+    background: var(--md-surface-container);
+    border-radius: 28px; /* Канонічний великий радіус M3 */
+    padding: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.flash-error {
+    background: var(--md-error-container);
+    color: var(--md-on-error-container);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Виправлення заголовка картки */
+.card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 12px; 
+}
+
+/* Стиль для хрестика видалення */
+.delete-btn {
+    color: var(--md-outline);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+}
+.delete-btn:hover {
+    background: var(--md-error-container);
+    color: var(--md-on-error-container);
+}
+
+/* ==========================================================================
+   Додаткові виправлення сітки, статусів та кнопок (Не руйнують загальний код)
+   ========================================================================== */
+
+/* Адаптивна сітка для головної сторінки (блоки не розтягуються на весь екран) */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 100px 24px; /* відступ знизу для FAB кнопки */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* Налаштування заголовків всередині карток завдань */
+.task-title {
+    margin: 12px 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.device-name {
+    margin: 0;
+    font-size: 14px;
+    color: var(--md-outline);
+    display: flex;
+    align-items: center;
+}
+
+/* Компактні акуратні чіпси для статусів */
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Колір статусу "В очікуванні" (ніжний лавандовий / маджента варіант) */
+.status-chip.pending {
+    background: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+}
+
+/* Колір статусу "Виконано" (зелений закритий тон) */
+.status-chip.done {
+    background: var(--md-success-container);
+    color: var(--md-success);
+}
+
+/* Плаваюча кнопка дій FAB (Material Design Floating Action Button) */
+.fab-btn {
+    background: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+    padding: 16px 24px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 1000;
+}
+
+.fab-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+}
+
+/* Додаткове вирівнювання елементів у шапці картки */
+.card-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 16px; 
+}
+
+/* Контейнер для чіпса та дати разом */
+.header-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* відстань між чіпсом та датою */
+}
+
+/* Стиль тексту самої дати всередині картки */
+.task-date {
+    font-size: 13px;
+    color: var(--md-outline);
+    font-weight: 400;
+}
+
+/* Адаптивна сітка (наш грід, щоб картки не були на весь сайт) */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 100px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}

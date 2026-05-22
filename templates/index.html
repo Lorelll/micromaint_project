@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>Календар ТО</title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">
+            <span class="material-symbols-outlined" style="font-size: 24px; color: var(--md-primary);">calendar_month</span>
+            <span>Календар ТО</span>
+        </div>
+        <div class="user-actions">
+            <button id="theme-toggle" class="theme-toggle-btn">
+                <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+            </button>
+            
+            {% if session.get('logged_in') %}
+                <span class="user-name" style="font-weight: 500; margin-right: 8px; color: var(--md-on-surface);">
+                    {{ session.get('username') }}
+                </span>
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('add_task') }}" class="btn-text">Панель адміна</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="btn-text" style="color: #BA1A1A;">Вийти</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-text">Увійти</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+        {% for task in tasks %}
+        <div class="expressive-card">
+            <div class="card-header">
+                <div class="header-meta">
+                    <div class="status-chip {% if task['status'] == 'Виконано' %}done{% else %}pending{% endif %}">
+                        {{ task['status'] }}
+                    </div>
+                    <span class="task-date">{{ task['planned_date'] }}</span>
+                </div>
+                {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('delete_task', task_id=task['id']) }}" class="delete-btn" onclick="return confirm('Видалити завдання?');">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('task_detail', task_id=task['id']) }}" style="text-decoration: none; color: inherit;">
+                <h3 class="task-title">{{ task['title'] }}</h3>
+                <p class="device-name">
+                    <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 6px;">responsive_layout</span>
+                    {{ task['device_name'] }}
+                </p>
+            </a>
+        </div>
+        {% endfor %}
+    </main>
+
+    {% if session.get('role') == 'admin' %}
+    <a href="{{ url_for('add_task') }}" class="fab-btn" style="position: fixed; bottom: 24px; right: 24px; text-decoration: none;">
+        <span class="material-symbols-outlined" style="margin-right: 8px;">add</span>
+        Нове завдання
+    </a>
+    {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            // Ініціалізація теми з локального сховища
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            themeIcon.textContent = currentTheme === 'dark' ? 'light_mode' : 'dark_mode';
+
+            toggleBtn.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+            });
+        });
+    </script>
+</body>
+</html>

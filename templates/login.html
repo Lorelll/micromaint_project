@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вхід до системи</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+    <style>
+        .login-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 24px; box-sizing: border-box; }
+        .login-card { width: 100%; max-width: 360px; }
+        h2 { margin: 0 0 24px 0; font-weight: 400; font-size: 24px; text-align: center; }
+        .theme-float { position: absolute; top: 24px; right: 24px; }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" class="theme-toggle-btn theme-float" title="Перемкнути тему">
+        <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+    </button>
+
+    <div class="login-wrapper">
+        <div class="expressive-card login-card">
+            <h2>Авторизація</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash-error">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <div class="form-group">
+                    <label>Ім'я користувача</label>
+                    <input type="text" name="username" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-submit" style="width: 100%; margin-top: 12px;">Увійти</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            themeIcon.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light_mode' : 'dark_mode';
+
+            toggleBtn.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme');
+                let newTheme = theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeIcon.textContent = newTheme === 'dark' ? 'light_mode' : 'dark_mode';
+            });
+        });
+    </script>
+</body>
+</html>

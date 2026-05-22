@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі завдання</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+    <style>
+        .container { padding: 32px 24px; }
+        .task-card { max-width: 600px; margin: 0 auto; }
+        .meta-info { color: var(--md-outline); font-size: 14px; margin-bottom: 16px; display: flex; gap: 16px; }
+        h2 { margin: 0 0 8px 0; font-size: 24px; font-weight: 700; }
+        .location { display: flex; align-items: center; gap: 6px; color: var(--md-primary); font-weight: 500; margin-bottom: 24px; }
+        .checklist-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid var(--md-outline); padding-bottom: 8px; }
+        .check-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; font-size: 16px; cursor: pointer; }
+        .check-item input { width: 22px; height: 22px; accent-color: var(--md-primary); cursor: pointer; }
+        .btn-group { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+        .btn-success { background: var(--md-success); color: #fff; flex: 1; text-align: center; }
+        .btn-back { background: transparent; color: var(--md-primary); border: 1px solid var(--md-outline); text-align: center; padding: 12px 24px; }
+        .navbar-float { position: absolute; top: 16px; right: 24px; }
+    </style>
+</head>
+<body>
+    <div class="navbar-float">
+        <button id="theme-toggle" class="theme-toggle-btn" title="Перемкнути тему">
+            <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="expressive-card task-card">
+            <div class="meta-info">
+                <span><b>Статус:</b> {{ task['status'] }}</span>
+                <span><b>Дата:</b> {{ task['planned_date'] }}</span>
+            </div>
+            <h2>{{ task['title'] }}</h2>
+            <div class="location">
+                <span class="material-symbols-outlined" style="font-size: 18px;">location_on</span>
+                <span>{{ task['device_name'] }} ({{ task['location'] }})</span>
+            </div>
+
+            <h3 class="checklist-title">Експрес чек-лист виконання</h3>
+            <form method="POST">
+                {% for item in items %}
+                <label class="check-item">
+                    <input type="checkbox" name="checklist" value="{{ item['id'] }}" {% if item['is_done'] %}checked{% endif %}>
+                    <span>{{ item['item_text'] }}</span>
+                </label>
+                {% endfor %}
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success">Підтвердити виконання</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-back">До календаря</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            themeIcon.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light_mode' : 'dark_mode';
+
+            toggleBtn.addEventListener('click', () => {
+                let theme = document.documentElement.getAttribute('data-theme');
+                let newTheme = theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeIcon.textContent = newTheme === 'dark' ? 'light_mode' : 'dark_mode';
+            });
+        });
+    </script>
+</body>
+</html>
